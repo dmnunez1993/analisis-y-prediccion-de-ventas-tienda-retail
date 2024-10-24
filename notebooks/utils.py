@@ -52,6 +52,7 @@ def graficar_histogramas(df, columnas_df, nro_columnas=3, bins=5, kde=False, rot
             j_actual = 0
 
     plt.tight_layout()
+    plt.show()
 
 
 def graficar_boxplots(df, columnas_df, nro_columnas=3, figsize=(14, 10)):
@@ -79,15 +80,16 @@ def graficar_boxplots(df, columnas_df, nro_columnas=3, figsize=(14, 10)):
             i_actual += 1
             j_actual = 0
 
+    plt.tight_layout()
     plt.show()
 
 
-def obtener_campos_numericos_df(df):
+def obtener_columnas_numericas_df(df):
     return df.select_dtypes(include=[np.number]).columns.tolist()
 
 
 def obtener_estadisticas_descriptivas_df(df, num_decimales=None):
-    campos_numericos = obtener_campos_numericos_df(df)
+    campos_numericos = obtener_columnas_numericas_df(df)
 
     estadisticas = df[[*campos_numericos]].agg([
         "min",
@@ -120,3 +122,19 @@ def obtener_estadisticas_descriptivas_df_es(df, num_decimales=None):
 
     return estadisticas
 
+
+def graficar_histograma_y_boxplot(datos, nombre, bins=5):
+    _, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
+
+    sns.histplot(datos, kde=True, bins=bins, ax=ax1)
+
+    ax1.set_title(f"Histograma {nombre}")
+    ax1.set_xlabel(nombre)
+    ax1.set_ylabel("Freq.")
+
+    sns.boxplot(datos, ax=ax2)
+
+    ax2.set_title(f"Boxplot {nombre}")
+
+    plt.tight_layout()
+    plt.show()
